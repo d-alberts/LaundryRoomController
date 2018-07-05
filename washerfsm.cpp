@@ -2,6 +2,19 @@
 #include "washerfsm.h"
 
 // Transition events and transition table
+// Based on http://johnsantic.com/comp/state.html
+
+washerfsm::washerfsm(int lightPin, int doorPin) {
+  _lightPin = lightPin;
+  _doorPin = doorPin;
+  currentState = isEmpty;
+}
+
+washerfsm::washerfsm() {
+  _lightPin = 1;
+  _doorPin = 1;
+  currentState = isEmpty;
+}
 
 void washerfsm::Action_isEmpty_turnOnLight (void) {
   // Machine start
@@ -63,13 +76,6 @@ void washerfsm::Action_isFull_closeDoor (void) {
   // Dummy Event
 }
 
-washerfsm::washerfsm(int lightPin, int doorPin) {
-  _lightPin = lightPin;
-  _doorPin = doorPin;
-  //currentState = isEmpty;
-}
-
-
 // Event-driven state changes
 void washerfsm::SendEvent (enum MachineEvents newEvent) {
   void ( washerfsm::*stateTable [maxStates] [maxEvents] ) () = {
@@ -87,8 +93,11 @@ void washerfsm::SendEvent (enum MachineEvents newEvent) {
   }
 }
 
+MachineStates washerfsm::GetState() {
+  return currentState;
+}
 
-String washerfsm::GetState(){
+String washerfsm::GetStateAsString(){
   
   switch (currentState) {
     case isEmpty:
@@ -104,7 +113,7 @@ String washerfsm::GetState(){
       return "full";
       break;
     default:
-      return "ugh";
+      return String(currentState);
   }
 }  
 
@@ -113,15 +122,19 @@ long int washerfsm::GetLastCycleTime() {
 }
 
 void washerfsm::TurnOnLight() { 
+  _lightOn = true;
   SendEvent(turnOnLight);
 }
 void washerfsm::TurnOffLight() {
+  _lightOn = false;
   SendEvent(turnOffLight);
 }
 void washerfsm::OpenDoor() {
+  _doorOpen = true;
   SendEvent(openDoor);
 }
 void washerfsm::CloseDoor() {
+  _doorOpen = false;
   SendEvent(closeDoor);
 }
 

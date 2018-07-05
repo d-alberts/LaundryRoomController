@@ -8,14 +8,18 @@ enum MachineEvents { turnOnLight, turnOffLight, openDoor, closeDoor, maxEvents }
 
 class washerfsm {
     public:
+        washerfsm();
         washerfsm(int lightPin, int doorPin);
 
         void TurnOnLight();
         void TurnOffLight();
         void OpenDoor();
         void CloseDoor();
-        
-        String GetState();
+        bool isLightOn();
+        bool isDoorOpen();
+
+        MachineStates GetState();
+        String GetStateAsString();
         long int GetLastCycleTime();
         
         long int lastCycleTime;
@@ -24,6 +28,9 @@ class washerfsm {
     private:
         int _lightPin;
         int _doorPin;
+
+        bool _lightOn;
+        bool _doorOpen;
         
         enum MachineStates currentState;
         // enum MachineEvents newEvent;
@@ -45,8 +52,8 @@ class washerfsm {
         void Action_isFull_turnOffLight();
         void Action_isFull_openDoor();
         void Action_isFull_closeDoor();
-        void main();
-        //void (*const stateTable [1] [1]) (void);
+        
+        
         void (*washerfsm::*stateTable [maxStates] [maxEvents]) ();
         
 };
