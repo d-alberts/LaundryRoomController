@@ -15,8 +15,8 @@ class washerfsm {
         void TurnOffLight();
         void OpenDoor();
         void CloseDoor();
-        bool isLightOn();
-        bool isDoorOpen();
+        bool IsLightOn();
+        bool IsDoorOpen();
 
         MachineStates GetState();
         String GetStateAsString();

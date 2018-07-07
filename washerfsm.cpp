@@ -131,11 +131,21 @@ void washerfsm::TurnOffLight() {
 }
 void washerfsm::OpenDoor() {
   _doorOpen = true;
+  Serial.println("Door Opened");
   SendEvent(openDoor);
 }
 void washerfsm::CloseDoor() {
   _doorOpen = false;
+  Serial.println("Door Closed");
   SendEvent(closeDoor);
+}
+
+bool washerfsm::IsLightOn() {
+  return false;  
+}
+
+bool washerfsm::IsDoorOpen(){
+  return _doorOpen;
 }
 
 
